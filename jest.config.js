@@ -9,6 +9,10 @@ export default {
   },
   setupFiles: ['<rootDir>/tests/polyfills.ts'],
   setupFilesAfterEnv: ['<rootDir>/tests/setup.ts'],
+  reporters: [
+    'default',
+    ['jest-junit', { outputDirectory: 'test-results', outputName: 'junit.xml' }]
+  ],
   collectCoverageFrom: [
     'src/**/*.{ts,tsx}',
     '!src/main.tsx',
