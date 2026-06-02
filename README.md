@@ -34,6 +34,37 @@ npm install
 | `npm run test:watch` | Tests en mode watch |
 | `npm run test:coverage` | Tests avec rapport de couverture |
 
+## Docker
+
+L'application est conteneurisée via un `Dockerfile` **multi-stage** : un premier stage Node 22 compile le bundle Vite (`dist/`), un second stage `nginx:alpine` sert uniquement ces fichiers statiques. L'image finale ne contient donc ni `node_modules` ni la chaîne de build.
+
+### Lancer avec Docker Compose
+
+```bash
+docker compose up -d --build
+```
+
+L'application est alors accessible sur **http://localhost** (port 80).
+
+Pour l'arrêter :
+
+```bash
+docker compose down
+```
+
+### Build et exécution manuels (sans Compose)
+
+```bash
+docker build -t olympic-participation-tracker:local .
+docker run -d -p 80:80 --name olympic olympic-participation-tracker:local
+```
+
+### Détails
+
+- **Port exposé :** 80 (Nginx).
+- **Configuration Nginx :** `nginx/nginx.conf` (gzip, cache des assets, fallback SPA `try_files ... /index.html`).
+- **`.dockerignore` :** exclut `node_modules/`, `dist/`, `tests/`, `coverage/` et les métadonnées pour garder un contexte de build minimal.
+
 ## Structure du projet
 
 ```

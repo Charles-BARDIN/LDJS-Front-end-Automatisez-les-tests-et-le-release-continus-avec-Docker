@@ -1,0 +1,8 @@
+services:
+  web:
+    build: .
+    image: olympic-participation-tracker:local
+    container_name: olympic-participation-tracker
+    ports:
+      - "80:80"
+    restart: unless-stopped
